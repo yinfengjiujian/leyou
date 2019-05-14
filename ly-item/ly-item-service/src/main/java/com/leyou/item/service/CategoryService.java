@@ -24,7 +24,11 @@ public class CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
 
-
+    /**
+     * 根据商品分类ID 查询商品分类List
+     * @param pid
+     * @return
+     */
     public List<Category> queryCategoryByPid(Long pid) {
         //查询条件，mapper会把对象中的非空属性转换为条件，进行查询
         Category category = new Category();
@@ -36,4 +40,19 @@ public class CategoryService {
         }
         return list;
     }
+
+    /**
+     * 根据传入的分类List<id> 集合  查询对应的商品分类 List<Category>
+     * @param ids
+     * @return
+     */
+    public List<Category> queryByIds(List<Long> ids){
+        List<Category> categoryList = categoryMapper.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(categoryList)) {
+            throw new LyException(ExceptionEnum.CATEGORY_NOT_FOUND);
+        }
+        return categoryList;
+    }
+
+    
 }
